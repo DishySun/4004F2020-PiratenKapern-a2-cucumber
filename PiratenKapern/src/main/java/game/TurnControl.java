@@ -114,7 +114,7 @@ public class TurnControl {
 	public Boolean stash(HashSet<Integer> index) {
 		try {
 			currTurn.moveToChest(index);
-			this.announce("\n*Action: stash");
+			this.announce("\n*Action: stash\n" + currTurn.statString());
 		} catch (ChestException e) {
 			this.sendToCurrentPlayer("\n*You do not have a Treasure Cheast.");
 		}
@@ -124,7 +124,7 @@ public class TurnControl {
 	public Boolean withdraw(HashSet<Integer> index) {
 		try {
 			currTurn.moveToHand(index);
-			this.announce("\n*Action: withdraw");
+			this.announce("\n*Action: withdraw\n" + currTurn.statString());
 		} catch (ChestException e) {
 			this.sendToCurrentPlayer("\n*You do not have a Treasure Cheast.");
 		}
@@ -133,13 +133,13 @@ public class TurnControl {
 
 	public Boolean unlock(HashSet<Integer> index) {
 		currTurn.unlock(index);
-		this.announce("\n*Action: unlcok");
+		this.announce("\n*Action: unlcok\n" + currTurn.statString());
 		return false;
 	}
 
 	public Boolean lock(HashSet<Integer> index) {
 		currTurn.lock(index);
-		this.announce("\n*lock");
+		this.announce("\n*Action: lock\n" + currTurn.statString());
 		return false;
 	}
 
@@ -150,7 +150,7 @@ public class TurnControl {
 		}
 		else flag = currTurn.reroll(null);
 		if (flag == -1) {
-			this.sendToCurrentPlayer("\n*You need to roll at least 2 dice.");
+			this.sendToCurrentPlayer("\n*You need to roll at least 2 dice.\n" + currTurn.statString());
 			return false;
 		}
 		this.sendToCurrentPlayer("\n*You have rerolled:\n"+currTurn.statString());

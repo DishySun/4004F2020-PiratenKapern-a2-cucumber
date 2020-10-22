@@ -51,7 +51,7 @@ public class Turn {
 	public String statString() {
 		String result ="Hand: ";
 		for (int i = 0 ; i < hand.size(); i++) {
-			result += hand.get(i);
+			result += i + " " +hand.get(i);
 			if (i < hand.size()-1) result += ", ";
 		}
 		if (this.chest == null) return result;
