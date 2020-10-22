@@ -256,7 +256,8 @@ public class Turn {
 				if (d.getFace() == Dice.Face.SKULL) skulls++;
 			}
 		}else {
-			this.hand = dice;
+			hand.clear();
+			hand.addAll(dice);
 			for (Dice d : hand) {
 				if (d.getFace() == Dice.Face.SKULL) skulls++;
 			}
@@ -284,8 +285,8 @@ public class Turn {
 				d.roll();
 			}
 		}else {
-			for (int i : rollIndex) {
-				hand.set(i, dice.get(i));
+			for (int i = 0; i < rollIndex.size(); i++) {
+				hand.set(rollIndex.get(i), dice.get(i));
 			}
 		}
 		int skulls = treasureInHand.get(Dice.Face.SKULL);
@@ -306,5 +307,28 @@ public class Turn {
 			if (!d.isLock()) a++;
 		}
 		return a;
+	}
+	
+	//testing methods
+	public void unlockAll() {
+		for (Dice d : hand) {
+			if (d.getFace() != Dice.Face.SKULL) d.unlock();
+		}
+	}
+	
+	public void hold(Dice.Face f) {
+		for (Dice d : hand) {
+			if (d.getFace() == f) d.lock();
+		}
+	}
+	
+	public void lockAll() {
+		for (Dice d : hand) d.lock();
+	}
+	
+	public void unhold(Dice.Face f) {
+		for (Dice d : hand) {
+			if (f != Dice.Face.SKULL && f == d.getFace()) d.unlock();
+		}
 	}
 }
