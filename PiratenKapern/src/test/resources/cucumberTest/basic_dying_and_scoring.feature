@@ -1,5 +1,5 @@
 @tag
-Feature: basic dying test
+Feature: basic dying and scoring test
 
   @tag38
   Scenario: die with 3 skulls on first roll
@@ -21,7 +21,7 @@ Feature: basic dying test
 	Scenario: die with 1 skulls on second roll
 		Given a turn
 		When fortune card is coin
-		And first roll: 2 skulls, 4 parrots, 2 swords
+		And first roll: 2 skulls, 4 parrot, 2 sword
 		And hold parrot
 		And reroll: 1 skull, 1 sword
 		Then disqulified: 3 or more skulls
@@ -251,7 +251,7 @@ Feature: basic dying test
 		Then reroll fail: roll at least 2 dice
 		
 	@tag70
-	Scenario: roll 2 skulls, reroll one of them due to sorceress, then go to next round of turn
+	Scenario: sorceress test: roll 2 skulls, reroll one of them due to sorceress, then go to next round of turn
 		Given a turn
 		When fortune card is sorceress
 		And first roll: 2 skull, 6 coin
@@ -260,7 +260,7 @@ Feature: basic dying test
 		Then only 1 skull in hand
 		
 	@tag71
-	Scenario: roll no skulls, then next round roll 1 skull and reroll for it, then score 
+	Scenario: sorceress test: roll no skulls, then next round roll 1 skull and reroll for it, then score 
 		Given a turn
 		When fortune card is sorceress
 		And first roll: 2 sword, 6 monkey
@@ -272,7 +272,7 @@ Feature: basic dying test
 		Then score: 1000
 		
 	@tag72
-	Scenario: roll no skulls, then next round roll 1 skull and reroll for it, then go to next round 
+	Scenario: sorceress test: roll no skulls, then next round roll 1 skull and reroll for it, then go to next round 
 		Given a turn
 		When fortune card is sorceress
 		And first roll: 2 sword, 6 monkey
@@ -283,7 +283,7 @@ Feature: basic dying test
 		Then no skull in hand
 		
 	@tag75
-	Scenario: first roll gets 3 monkeys 3 parrots  1 skull 1 coin
+	Scenario: monkey business test: first roll gets 3 monkeys 3 parrots  1 skull 1 coin
 		Given a turn
 		When fortune card is monkey business
 		And first roll: 3 monkey, 3 parrot,  1 skull, 1 coin
@@ -291,7 +291,7 @@ Feature: basic dying test
 		Then score: 1100
 		
 	@tag76
-	Scenario: over several rolls: 2 monkeys, 1 parrot, 2 coins, 1 diamond, 2 swords
+	Scenario: monkey business test: over several rolls: 2 monkeys, 1 parrot, 2 coins, 1 diamond, 2 swords
 		Given a turn
 		When fortune card is monkey business
 		And first roll: 4 monkey, 4 sword
@@ -300,7 +300,7 @@ Feature: basic dying test
 		Then score: 400
 	
 	@tag77
-	Scenario: over several rolls get 3 monkeys, 4 parrots, 1 sword
+	Scenario: monkey business test: over several rolls get 3 monkeys, 4 parrots, 1 sword
 		Given a turn
 		When fortune card is monkey business
 		And first roll: 4 monkey, 4 sword
@@ -335,3 +335,202 @@ Feature: basic dying test
 		And end turn;
 		Then score: 600
 		
+	@tag91
+	Scenario: full chest 1: 3 monkeys, 3 swords, 1 diamond, 1 parrot
+		Given a turn
+		When fortune card is coin
+		And first roll: 3 monkey, 3 sword, 1 diamond, 1 parrot
+		And end turn
+		Then score: 400
+		
+	@tag92
+	Scenario: full chest 2: 3 monkeys, 3 swords, 2 coins FC: captain
+		Given a turn
+		When fortune card is captain
+		And firstroll: 3 monkey, 3 sword, 2 coin
+		And end turn
+		Then score: 1800
+		
+	@tag93
+	Scenario: full chest 3: 3 monkeys, 4 swords, 1 diamond, FC: coin
+		Given a turn
+		When fortune card is coin
+		And first roll: 3 monkey, 4 sword, 1 diamond
+		And end turn
+		Then score: 1000
+		
+	@tag94
+	Scenario: full chest 4
+		Given a turn
+		When fortune card is sea battle 2
+		And first roll: 4 monkey, 1 sword, 2 parrot, 1 coin
+		And hold monkey
+		And hold sword
+		And hold coin
+		And reroll: 1 sword, 1 coin
+		And end turn
+		Then score: 1200
+		
+	@tag97
+	Scenario: full chest 5: FC: monkey business and RTS: 2 monkeys, 1 parrot, 2 coins, 3 diamonds
+		Given a turn
+		When fortune card is monkey business
+		And first roll: 2 monkey, 1 parrot, 2 coin, 3 diamond
+		And end turn
+		Then score: 1200
+		
+	@tag100
+	Scenario: die by rolling one skull and having a FC with two skulls
+		Given a turn
+		When fortune card is skull 2
+		And first roll: 1 skull, 4 parrots, 3 swords
+		Then disqulified: 3 or more skulls
+		
+	@tag101
+	Scenario: die by rolling 2 skulls and having a FC with 1 skull
+		Given a turn
+		When fortune card is skull 1
+		And first roll: 2 skulls, 6 coin
+		Then disqulified: 3 or more skulls
+		
+	@tag102
+	Scenario: roll 5 skulls with FC: Captain
+		Given a turn
+		When fortune card is captain
+		And first roll: 5 skull, 3 coin
+		And end turn
+		Then -1000 for all other players
+		
+	@103
+	Scenario: roll 2 skulls AND have a FC with two skulls: roll 2 skulls next roll, then 1 skull
+		Given a turn
+		When fortune card is skull 2
+		And first roll: 2 skulls, 4 parrot, 2 sword
+		And reroll: 2 skull, 4 parrot
+		And reroll: 1 skull, 3 sword
+		And end turn
+		Then other score
+		And score: -700
+		
+	@tag104
+	Scenario: roll 3 skulls AND have a FC with two skulls: roll no skulls next roll
+		Given a turn
+		When fortune card is skull 2
+		And first roll: 3 skulls on firstroll
+		Then continue on first roll
+		When reroll: 5 coin
+		Then disqulified: did not roll skull in skull island
+		When end turn
+		Then other score
+		And score: -500
+		
+	@tag105
+	Scenario: roll 3 skulls AND have a FC with 1 skull: roll 1 skull next roll then none
+		Given a turn
+		When fortune card is skull 1
+		And first roll: 3 skulls on firstroll
+		Then continue on first roll
+		When reroll: 1 skull, 4 parrot
+		And reroll: 4 monkey
+		Then disqulified: did not roll skull in skull island
+		When end turn
+		Then other score
+		And score: -500
+		
+	@tag109
+	Scenario: FC 2 swords, die on first roll
+		Given a turn
+		When fortune card is sea battle 2
+		And first roll: 3 skulls on firstroll
+		Then disqulified after firstroll
+		When end turn
+		Then self score
+		And score: -300
+		
+	@tag110
+	Scenario: FC 3 swords, die on first roll
+		Given a turn
+		When fortune card is sea battle 3
+		And first roll: 3 skulls on firstroll
+		Then disqulified after firstroll
+		When end turn
+		Then self score
+		And score: -500
+		
+	@tag111
+	Scenario: FC 4 swords, die on first roll
+		Given a turn
+		When fortune card is sea battle 4
+		And first roll: 3 skulls on firstroll
+		Then disqulified after firstroll
+		When end turn
+		Then self score
+		And score: -1000
+
+	@tag113
+	Scenario: FC 2 swords, roll 3 monkeys 2 swords, 1 coin, 2 parrots  SC = 100 + 100 + 300 = 500
+		Given a turn
+		When fortune card is sea battle 2
+		And first roll: 3 monkey, 2 sword, 1 coin, 2 parrot
+		And end turn
+		Then self score
+		And score: 500
+		
+	@tag114
+	Scenario: FC 2 swords with reroll
+		Given a turn
+		When fortune card is sea battle 2
+		And first roll: 4 monkey, 1 sword, 1 skull, 2 parrot
+		And hold monkey
+		And hold sword
+		And reroll: 1 sword, 1 skull
+		And end turn
+		Then self score
+		And score: 500
+		
+	@tag116
+	Scenario: FC 3 swords, roll 3 monkeys 4 swords  SC = 100 + 200 + 500 = 800
+		Given a turn
+		When fortune card is sea battle 3
+		And first roll: 3 monkey, 4 sword, 1 skull
+		And end turn
+		Then self score
+		And score: 800
+		
+	@tag117
+	Scenario: FC 3 swords with reroll
+		Given a turn
+		When fortune card is sea battle 3
+		And first roll: 4 monkey, 2 sword, 2 skull
+		And hold sword
+		And reroll: 2 sword, 2 skull
+		Then disqulified: 3 or more skulls
+		When end turn
+		Then self score
+		And score: -500
+		
+	@tag119
+	Scenario: FC 4 swords, roll 3 monkeys 4 swords 1 skull  SC = 100 +200 + 1000 = 1300
+		Given a turn
+		When fortune card is sea battle 4
+		And first roll: 3 monkey, 4 sword, 1 skull
+		And end turn
+		Then self score
+		And score: 1300
+		
+	@tag120
+	Scenario: FC 4 swords with reroll
+		Given a turn
+		When fortune card is sea battle 4
+		And first roll: 3 monkey, 1 sword, 1 skull, 1 diamond, 2 parrot
+		And hold monkey
+		And hold sword
+		And hold diamond
+		And reroll: 2 sword
+		And unhold all
+		And hold sword
+		And hold diamond
+		And reroll: 1 sword, 2 parrot
+		And end turn
+		Then self score
+		And score: 1300

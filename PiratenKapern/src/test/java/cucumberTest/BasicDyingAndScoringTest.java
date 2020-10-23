@@ -1,4 +1,4 @@
-package turnTest;
+package cucumberTest;
 
 import static org.junit.Assert.*;
 
@@ -8,11 +8,12 @@ import java.util.HashSet;
 import cucumber.annotation.en.*;
 import entity.Dice;
 import game.ChestException;
+import game.OneTurnScoreChange;
 import game.Turn;
 
 public class BasicDyingAndScoringTest {
-	Turn turn;
-	ArrayList<Dice> dice;
+	private Turn turn;
+	private ArrayList<Dice> dice;
 	
 	private void add(String diceStr, int number) {
 		for (int i = 0; i < number; i++) {
@@ -115,7 +116,7 @@ public class BasicDyingAndScoringTest {
 	}
 	
 	//38
-	@When("roll 3 skulls on firstroll")
+	@When("first roll: 3 skulls on firstroll")
 	public void roll3SkullsOnFirstRoll() {
 		add("sk", 3);
 		add("mo", 3);
@@ -149,12 +150,12 @@ public class BasicDyingAndScoringTest {
 	}
 	
 	//40
-	@When("first roll: 2 skulls, 4 parrots, 2 swords")
+	@When("first roll: 2 skulls, 4 parrot, 2 sword")
 	public void firstRoll_40() {
 		add("sk", 2);
 		add("pa", 4);
 		add("sw", 2);
-		assertFalse(turn.firstRoll(dice));
+		turn.firstRoll(dice);
 	}
 	
 	@When("reroll: 1 skull, 1 sword")
@@ -198,12 +199,12 @@ public class BasicDyingAndScoringTest {
 		dice.add(new Dice("pa"));
 		dice.add(new Dice("mo"));
 		dice.add(new Dice("mo"));
-		assertFalse(turn.firstRoll(dice));
-		System.err.println(turn.statString());
+		turn.firstRoll(dice);
 	}
 	
 	@Then("score: 800")
 	public void score800() {
+		assertEquals(OneTurnScoreChange.Range.SELF, turn.getDelta().getRange());
 		assertEquals(800, turn.getDelta().getChange());
 	}
 	
@@ -218,7 +219,7 @@ public class BasicDyingAndScoringTest {
 		dice.add(new Dice("pa"));
 		dice.add(new Dice("sw"));
 		dice.add(new Dice("sw"));
-		assertFalse(turn.firstRoll(dice));
+		turn.firstRoll(dice);
 	}
 	
 	@When("reroll: 1 monkey, 2 parrot, 1 sword")
@@ -233,6 +234,7 @@ public class BasicDyingAndScoringTest {
 	
 	@Then("score: 200")
 	public void score200() {
+		assertEquals(OneTurnScoreChange.Range.SELF, turn.getDelta().getRange());
 		assertEquals(200, turn.getDelta().getChange());
 	}
 	
@@ -242,11 +244,12 @@ public class BasicDyingAndScoringTest {
 		add("mo", 3);
 		add("sw", 3);
 		add("sk", 2);
-		assertFalse(turn.firstRoll(dice));
+		turn.firstRoll(dice);
 	}
 	
 	@Then("score: 300")
 	public void score300() {
+		assertEquals(OneTurnScoreChange.Range.SELF, turn.getDelta().getRange());
 		assertEquals(300, turn.getDelta().getChange());
 	}
 	
@@ -261,7 +264,7 @@ public class BasicDyingAndScoringTest {
 		dice.add(new Dice("sw"));
 		dice.add(new Dice("sk"));
 		dice.add(new Dice("sk"));
-		assertFalse(turn.firstRoll(dice));
+		turn.firstRoll(dice);
 	}
 	
 	@When("reroll: 1 monkey, 1 parrot")
@@ -279,11 +282,12 @@ public class BasicDyingAndScoringTest {
 		add("sk", 2);
 		add("sw", 1);
 		add("pa", 2);
-		assertFalse(turn.firstRoll(dice));
+		turn.firstRoll(dice);
 	}
 	
 	@Then("score: 500")
 	public void score500() {
+		assertEquals(OneTurnScoreChange.Range.SELF, turn.getDelta().getRange());
 		assertEquals(500, turn.getDelta().getChange());
 	}
 	
@@ -293,11 +297,12 @@ public class BasicDyingAndScoringTest {
 		add("co", 4);
 		add("sk", 2);
 		add("pa", 2);
-		assertFalse(turn.firstRoll(dice));
+		turn.firstRoll(dice);
 	}
 	
 	@Then("score: 700")
 	public void score700() {
+		assertEquals(OneTurnScoreChange.Range.SELF, turn.getDelta().getRange());
 		assertEquals(700, turn.getDelta().getChange());
 	}
 	
@@ -307,11 +312,12 @@ public class BasicDyingAndScoringTest {
 		add("sw", 3);
 		add("pa", 4);
 		add("mo", 1);
-		assertFalse(turn.firstRoll(dice));
+		turn.firstRoll(dice);
 	}
 	
 	@Then("score: 400")
 	public void score400() {
+		assertEquals(OneTurnScoreChange.Range.SELF, turn.getDelta().getRange());
 		assertEquals(400, turn.getDelta().getChange());
 	}
 	
@@ -322,7 +328,7 @@ public class BasicDyingAndScoringTest {
 		add("sw", 2);
 		add("pa", 2);
 		add("mo", 2);
-		assertFalse(turn.firstRoll(dice));
+		turn.firstRoll(dice);
 	}
 	
 	@When("reroll: 1 coin, 1 monkey, 2 parrot")
@@ -355,7 +361,7 @@ public class BasicDyingAndScoringTest {
 	public void firstRoll_52() {
 		add("sw", 2);
 		add("mo", 6);
-		assertFalse(turn.firstRoll(dice));
+		turn.firstRoll(dice);
 	}
 	
 	@When("reroll: 1 sword, 5 monkey")
@@ -385,12 +391,14 @@ public class BasicDyingAndScoringTest {
 	
 	@Then("score: 600")
 	public void score600() {
+		assertEquals(OneTurnScoreChange.Range.SELF, turn.getDelta().getRange());
 		assertEquals(600, turn.getDelta().getChange());
 	}
 	
 	//53
 	@Then("score: 1100")
 	public void score1100() {
+		assertEquals(OneTurnScoreChange.Range.SELF, turn.getDelta().getRange());
 		assertEquals(1100,turn.getDelta().getChange());
 	}
 	
@@ -399,11 +407,12 @@ public class BasicDyingAndScoringTest {
 	public void firstRoll_54() {
 		add("pa", 7);
 		add("sk" ,1);
-		assertFalse(turn.firstRoll(dice));
+		turn.firstRoll(dice);
 	}
 	
 	@Then("score: 2100")
 	public void score2100() {
+		assertEquals(OneTurnScoreChange.Range.SELF, turn.getDelta().getRange());
 		assertEquals(2100, turn.getDelta().getChange());
 	}
 	
@@ -411,11 +420,12 @@ public class BasicDyingAndScoringTest {
 	@When("first roll: 8 coin")
 	public void firstRoll_55() {
 		add("co", 8);
-		assertFalse(turn.firstRoll(dice));
+		turn.firstRoll(dice);
 	}
 	
 	@Then("score: 5400")
 	public void score5400() {
+		assertEquals(OneTurnScoreChange.Range.SELF, turn.getDelta().getRange());
 		assertEquals(5400, turn.getDelta().getChange());
 	}
 	
@@ -423,11 +433,12 @@ public class BasicDyingAndScoringTest {
 	@When("first roll: 8 sword")
 	public void firstRoll_57() {
 		add("sw", 8);
-		assertFalse(turn.firstRoll(dice));
+		turn.firstRoll(dice);
 	}
 	
 	@Then("score: 9000")
 	public void score9000() {
+		assertEquals(OneTurnScoreChange.Range.SELF, turn.getDelta().getRange());
 		assertEquals(9000, turn.getDelta().getChange());
 	}
 	
@@ -436,7 +447,7 @@ public class BasicDyingAndScoringTest {
 	public void firstRoll_58() {
 		add("mo", 4);
 		add("sw", 4);
-		assertFalse(turn.firstRoll(dice));
+		turn.firstRoll(dice);
 	}
 	
 	@When("reroll: 2 monkey, 2 parrot")
@@ -456,6 +467,7 @@ public class BasicDyingAndScoringTest {
 	
 	@Then("score: 4600")
 	public void score4600() {
+		assertEquals(OneTurnScoreChange.Range.SELF, turn.getDelta().getRange());
 		assertEquals(4600, turn.getDelta().getChange());
 	}
 	
@@ -498,7 +510,7 @@ public class BasicDyingAndScoringTest {
 		add("mo", 4);
 		add("co", 3);
 		add("sk", 1);
-		assertFalse(turn.firstRoll(dice));
+		turn.firstRoll(dice);
 	}
 	
 	//65
@@ -506,7 +518,7 @@ public class BasicDyingAndScoringTest {
 	public void firstRoll_65() {
 		add("sw", 7);
 		add("mo", 1);
-		assertFalse(turn.firstRoll(dice));
+		turn.firstRoll(dice);
 	}
 	
 	@Then("reroll fail: roll at least 2 dice")
@@ -519,7 +531,7 @@ public class BasicDyingAndScoringTest {
 	public void firstRoll_70() {
 		add("sk", 2);
 		add("co", 6);
-		assertFalse(turn.firstRoll(dice));
+		turn.firstRoll(dice);
 	}
 	
 	@When("unlock one of skulls")
@@ -563,6 +575,7 @@ public class BasicDyingAndScoringTest {
 	
 	@Then("score: 1000")
 	public void score1000() {
+		assertEquals(OneTurnScoreChange.Range.SELF, turn.getDelta().getRange());
 		assertEquals(1000, turn.getDelta().getChange());
 	}
 	
@@ -583,7 +596,7 @@ public class BasicDyingAndScoringTest {
 		add("pa", 3);
 		add("sk", 1);
 		add("co", 1);
-		assertFalse(turn.firstRoll(dice));
+		turn.firstRoll(dice);
 	}
 	
 	//76
@@ -609,6 +622,7 @@ public class BasicDyingAndScoringTest {
 	
 	@Then("score: 2000")
 	public void score2000() {
+		assertEquals(OneTurnScoreChange.Range.SELF, turn.getDelta().getRange());
 		assertEquals(2000, turn.getDelta().getChange());
 	}
 	
@@ -619,7 +633,7 @@ public class BasicDyingAndScoringTest {
 		add("sw", 2);
 		add("di", 2);
 		add("co", 1);
-		assertFalse(turn.firstRoll(dice));
+		turn.firstRoll(dice);
 	}
 	
 	@When("stash: index 5 6 7")
@@ -678,7 +692,7 @@ public class BasicDyingAndScoringTest {
 		add("sk",2);
 		add("pa",3);
 		add("co",3);
-		assertFalse(turn.firstRoll(dice));
+		turn.firstRoll(dice);
 	}
 	
 	@When("reroll: 2 diamond, 1 coin")
@@ -708,5 +722,252 @@ public class BasicDyingAndScoringTest {
 		assertEquals(1,turn.reroll(dice));
 	}
 	
+	//91
+	@When("first roll: 3 monkey, 3 sword, 1 diamond, 1 parrot")
+	public void firstRoll_91() {
+		add("mo",3);
+		add("sw",3);
+		add("di",1);
+		add("pa",1);
+		turn.firstRoll(dice);
+	}
+	
+	//92
+	@When("firstroll: 3 monkey, 3 sword, 2 coin")
+	public void firstroll_92() {
+		add("mo", 3);
+		add("sw", 3);
+		add("co", 2);
+		turn.firstRoll(dice);
+	}
+	
+	@Then("score: 1800")
+	public void score1800() {
+		assertEquals(OneTurnScoreChange.Range.SELF, turn.getDelta().getRange());
+		assertEquals(1800, turn.getDelta().getChange());
+	}
+	
+	//93
+	@When("first roll: 3 monkey, 4 sword, 1 diamond")
+	public void firstRoll_93() {
+		add("mo",3);
+		add("sw",4);
+		add("di",1);
+		turn.firstRoll(dice);
+	}
+	
+	//94
+	@When("first roll: 4 monkey, 1 sword, 2 parrot, 1 coin")
+	public void firstRoll_94() {
+		add("mo", 4);
+		add("sw", 1);
+		add("pa", 2);
+		add("co", 1);
+		turn.firstRoll(dice);
+	}
+	
+	@When("reroll: 1 sword, 1 coin")
+	public void reroll_94_1() {
+		dice.clear();
+		add("sw", 1);
+		add("co", 1);
+		assertEquals(0, turn.reroll(dice));
+	}
+	
+	@Then("score: 1200")
+	public void score1200() {
+		assertEquals(OneTurnScoreChange.Range.SELF, turn.getDelta().getRange());
+		assertEquals(1200, turn.getDelta().getChange());
+	}
+	
+	//97
+	@When("first roll: 2 monkey, 1 parrot, 2 coin, 3 diamond")
+	public void firstRoll_97() {
+		add("mo", 2);
+		add("pa", 1);
+		add("co", 2);
+		add("di", 3);
+		turn.firstRoll(dice);
+	}
+	
+	//101
+	@When("first roll: 2 skulls, 6 coin")
+	public void firstRoll_101() {
+		add("sk", 2);
+		add("co", 6);
+		turn.firstRoll(dice);
+	}
+	
+	//102
+	@When("first roll: 5 skull, 3 coin")
+	public void firstRoll_102() {
+		add("sk", 5);
+		add("co", 3);
+		turn.firstRoll(dice);
+	}
+	
+	@Then("-1000 for all other players")
+	public void then_102() {
+		assertEquals(OneTurnScoreChange.Range.OTHER, turn.getDelta().getRange());
+		assertEquals(-1000, turn.getDelta().getChange());
+	}
+	
+	//103
+	@When("reroll: 2 skull, 4 parrot")
+	public void reroll_103_1() {
+		dice.clear();
+		add("sk", 2);
+		add("pa", 4);
+		turn.reroll(dice);
+	}
+	
+	@When("reroll: 1 skull, 3 sword")
+	public void reroll_103_2() {
+		dice.clear();
+		add("sk", 1);
+		add("sw", 3);
+		turn.reroll(dice);
+	}
+	
+	@Then("score: -700")
+	public void then_103() {
+		assertEquals(-700, turn.getDelta().getChange());
+	}
+	
+	
+	//104
+	@When("reroll: 5 coin")
+	public void reroll_104() {
+		dice.clear();
+		add("co", 5);
+	}
+	
+	@Then("continue on first roll")
+	public void then_104_0() {
+		assertFalse(turn.firstRoll(dice));
+	}
+	
+	@Then("disqulified: did not roll skull in skull island")
+	public void then_104_1() {
+		assertEquals(2, turn.reroll(dice));
+	}
+	
+	@Then("score: -500")
+	public void scoreNegative500() {
+		assertEquals(-500, turn.getDelta().getChange());
+	}
+	
+	//105
+	@When("reroll: 1 skull, 4 parrot")
+	public void reroll_105_1() {
+		dice.clear();
+		add("sk", 1);
+		add("pa", 4);
+		turn.reroll(dice);
+	}
+	
+	@When("reroll: 4 monkey")
+	public void reroll_105_2() {
+		dice.clear();
+		add("mo", 4);
+	}
+	
+	//109
+	@Then("score: -300")
+	public void scoreNegative300(){
+		assertEquals(-300, turn.getDelta().getChange());
+	}
+	
+	@Then("self score")
+	public void selfScore() {
+		assertEquals(OneTurnScoreChange.Range.SELF, turn.getDelta().getRange());
+	}
+	
+	@Then("other score")
+	public void otherScore() {
+		assertEquals(OneTurnScoreChange.Range.OTHER, turn.getDelta().getRange());
+	}
+	
+	//113
+	@When("first roll: 3 monkey, 2 sword, 1 coin, 2 parrot")
+	public void firstRoll_113() {
+		add("mo", 3);
+		add("sw", 2);
+		add("co", 1);
+		add("pa", 2);
+		turn.firstRoll(dice);
+	}
+	
+	//114
+	@When("first roll: 4 monkey, 1 sword, 1 skull, 2 parrot")
+	public void firstRoll() {
+		add("mo", 4);
+		add("sw", 1);
+		add("sk", 1);
+		add("pa", 2);
+		turn.firstRoll(dice);
+	}
+	
+	//116
+	@When("first roll: 3 monkey, 4 sword, 1 skull")
+	public void firstRoll_116() {
+		add("mo", 3);
+		add("sw", 4);
+		add("sk", 1);
+		turn.firstRoll(dice);
+	}
+	
+	//117
+	@When("first roll: 4 monkey, 2 sword, 2 skull")
+	public void firstRoll_117() {
+		add("mo",4);
+		add("sw",2);
+		add("sk",2);
+		turn.firstRoll(dice);
+	}
+	
+	@When("reroll: 2 sword, 2 skull")
+	public void reroll_117_1() {
+		dice.clear();
+		add("sw",2);
+		add("sk",2);
+	}
+	
+	//119
+	@Then("score: 1300")
+	public void score1300() {
+		assertEquals(1300, turn.getDelta().getChange());
+	}
+	
+	//120
+	@When("first roll: 3 monkey, 1 sword, 1 skull, 1 diamond, 2 parrot")
+	public void firstRoll_120() {
+		add("mo", 3);
+		add("sw", 1);
+		add("sk", 1);
+		add("di", 1);
+		add("pa", 2);
+		turn.firstRoll(dice);
+	}
+	
+	@When("reroll: 2 sword")
+	public void reroll_120_1() {
+		dice.clear();
+		add("sw", 2);
+		turn.reroll(dice);
+	}
+	
+	@When("unhold all")
+	public void unholdAll() {
+		turn.unlockAll();
+	}
+	
+	@When("reroll: 1 sword, 2 parrot")
+	public void reroll_120_2() {
+		dice.clear();
+		add("sw", 1);
+		add("pa", 2);
+		turn.reroll(dice);
+	}
 	
 }
